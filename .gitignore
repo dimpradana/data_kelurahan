@@ -1,0 +1,21 @@
+# Virtual Environment
+env/
+venv/
+ENV/
+
+# Database
+db.sqlite3
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swogit add .

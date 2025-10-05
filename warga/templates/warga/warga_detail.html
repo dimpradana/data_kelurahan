@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Warga</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e2ebf3ff;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .value {
+            color: #2c3e50;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #1c5980;
+        }
+
+        .icon {
+            margin-right: 10px;
+            color: #3498db;
+        }
+    </style>
+    <!-- Optional: Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-id-card icon"></i> Detail Warga</h1>
+
+        <div class="detail-item">
+            <span class="label">NIK:</span>
+            <span class="value">{{ object.nik }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="label">Nama:</span>
+            <span class="value">{{ object.nama_lengkap }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="label">Alamat:</span>
+            <span class="value">{{ object.alamat }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="label">No Telepon:</span>
+            <span class="value">{{ object.no_telepon|default:"Tidak ada" }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="label">Tanggal Registrasi:</span>
+            <span class="value">{{ object.tanggal_registrasi }}</span>
+        </div>
+
+        <a href="{% url 'warga-list' %}" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Daftar</a>
+    </div>
+</body>
+</html>
