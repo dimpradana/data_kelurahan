@@ -9,4 +9,26 @@ class Warga(models.Model):
 
     def __str__(self):
         return self.nama_lengkap
-# Create your models here.
+
+
+class Pengaduan(models.Model):
+    STATUS_CHOICES = [
+        ('BARU', 'Baru'),
+        ('DIPROSES', 'Diproses'),
+        ('SELESAI', 'Selesai'),
+    ]
+    
+    judul = models.CharField(max_length=200)
+    deskripsi = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='BARU')
+    tanggal_lapor = models.DateTimeField(auto_now_add=True)
+    
+    # Relasi One-to-Many: Satu Warga → Banyak Pengaduan
+    pelapor = models.ForeignKey(
+        Warga,
+        on_delete=models.CASCADE,
+        related_name='pengaduan'  # Memungkinkan: warga.pengaduan.all()
+    )
+
+    def __str__(self):
+        return self.judul
