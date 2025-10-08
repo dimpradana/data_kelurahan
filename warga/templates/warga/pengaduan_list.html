@@ -2,25 +2,94 @@
 <html>
 <head>
     <title>Daftar Semua Pengaduan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        li strong {
+            font-size: 18px;
+            color: #34495e;
+        }
+
+        li em {
+            color: #7f8c8d;
+        }
+
+        li small {
+            display: block;
+            margin-top: 8px;
+            color: #95a5a6;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
+<h1>Daftar Semua Pengaduan</h1>
+<a href="{% url 'pengaduan-tambah' %}">➕ Tambah Pengaduan Baru</a>
+<hr>
 <body>
-    <h1>Daftar Semua Pengaduan Warga</h1>
+    <h1>📋 Daftar Semua Pengaduan Warga</h1>
     <ul>
         {% for aduan in pengaduan_list %}
             <li>
                 <strong>{{ aduan.judul }}</strong> 
-                (Status: {{ aduan.get_status_display }})
+                <span style="float:right; background-color:#ecf0f1; padding:2px 8px; border-radius:4px;">
+                    Status: {{ aduan.get_status_display }}
+                </span>
                 <br>
-                <em>Oleh: {{ aduan.pelapor.nama_lengkap }}</em>
+                <em>👤 Oleh: {{ aduan.pelapor.nama_lengkap }}</em>
                 <br>
-                {{ aduan.deskripsi|truncatewords:15 }}
+                📝 {{ aduan.deskripsi|truncatewords:15 }}
                 <br>
-                <small>{{ aduan.tanggal_lapor }}</small>
+                <small>📅 {{ aduan.tanggal_lapor }}</small>
             </li>
         {% empty %}
             <li>Belum ada pengaduan yang dilaporkan.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'warga-list' %}">Kembali ke Daftar Warga</a>
+    <a href="{% url 'warga-list' %}">⬅️ Kembali ke Daftar Warga</a>
 </body>
 </html>
