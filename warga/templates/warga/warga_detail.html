@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Detail Warga</title>
     <style>
         body {
@@ -11,25 +12,37 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: auto;
             background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
 
         h1, h2 {
             color: #2c3e50;
             text-align: center;
+            margin-bottom: 25px;
         }
 
-        p {
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info p {
             font-size: 16px;
-            margin: 10px 0;
+            margin: 0;
+            padding: 10px;
+            background-color: #f9fbfc;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        strong {
+        .info strong {
             color: #34495e;
         }
 
@@ -41,80 +54,141 @@
         li {
             background-color: #ecf0f1;
             margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            position: relative;
         }
 
         li strong {
-            font-size: 17px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #bdc3c7;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: #2c3e50;
         }
 
         li em {
             display: block;
-            margin-top: 5px;
+            margin-top: 8px;
             color: #7f8c8d;
         }
 
         li small {
             display: block;
-            margin-top: 8px;
+            margin-top: 10px;
             color: #95a5a6;
         }
 
-        a {
+        .empty {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        a.button {
             display: block;
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
             text-decoration: none;
             background-color: #3498db;
             color: white;
-            padding: 12px 20px;
-            border-radius: 5px;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
             width: fit-content;
             margin-left: auto;
             margin-right: auto;
-            transition: background-color 0.3s ease;
         }
 
-        a:hover {
+        a.button:hover {
             background-color: #2980b9;
         }
 
         hr {
-            margin: 30px 0;
+            margin: 40px 0 30px;
             border: none;
             border-top: 1px solid #dcdcdc;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .edit-btn {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
 <body>
+    <div class="action-buttons">
+        <a href="{% url 'warga-edit' object.pk %}" class="edit-btn">✏️ Edit Data</a>
+        <a href="{% url 'warga-hapus' object.pk %}" class="delete-btn">🗑️ Hapus Data</a>
+    </div>
+    <hr>
     <div class="container">
         <h1>🧾 Detail Warga</h1>
-        <p><strong>NIK:</strong> {{ object.nik }}</p>
-        <p><strong>Nama:</strong> {{ object.nama_lengkap }}</p>
-        <p><strong>Alamat:</strong> {{ object.alamat }}</p>
-        <p><strong>No Telepon:</strong> {{ object.no_telepon|default:"Tidak ada" }}</p>
-        <p><strong>Tanggal Registrasi:</strong> {{ object.tanggal_registrasi }}</p>
+        <div class="info">
+            <p><strong>NIK:</strong> {{ object.nik }}</p>
+            <p><strong>Nama:</strong> {{ object.nama_lengkap }}</p>
+            <p><strong>Alamat:</strong> {{ object.alamat }}</p>
+            <p><strong>No Telepon:</strong> {{ object.no_telepon|default:"Tidak ada" }}</p>
+            <p><strong>Tanggal Registrasi:</strong> {{ object.tanggal_registrasi }}</p>
+        </div>
 
         <hr>
         <h2>📋 Daftar Pengaduan oleh {{ object.nama_lengkap }}</h2>
         <ul>
             {% for aduan in object.pengaduan.all %}
                 <li>
-                    <strong>{{ aduan.judul }}</strong> 
-                    <span style="float:right; background-color:#bdc3c7; padding:2px 8px; border-radius:4px;">
-                        Status: {{ aduan.get_status_display }}
-                    </span>
+                    <strong>{{ aduan.judul }}</strong>
+                    <span class="badge">Status: {{ aduan.get_status_display }}</span>
                     <em>{{ aduan.deskripsi }}</em>
                     <small>📅 Dilaporkan: {{ aduan.tanggal_lapor }}</small>
                 </li>
             {% empty %}
-                <li>⚠️ Warga ini belum pernah membuat pengaduan.</li>
+                <div class="empty">⚠️ Warga ini belum pernah membuat pengaduan.</div>
             {% endfor %}
         </ul>
 
-        <a href="{% url 'warga-list' %}">⬅️ Kembali ke Daftar Warga</a>
+        <a href="{% url 'warga-list' %}" class="button">⬅️ Kembali ke Daftar Warga</a>
     </div>
 </body>
 </html>
