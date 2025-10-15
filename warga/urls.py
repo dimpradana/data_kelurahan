@@ -8,7 +8,8 @@ from .views import (
     WargaUpdateView,  
     WargaDeleteView,
     PengaduanUpdateView, 
-    PengaduanDeleteView  
+    PengaduanDeleteView
+   
 )
 
 urlpatterns = [
