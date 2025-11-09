@@ -5,24 +5,29 @@ from .views import (
     PengaduanListView,
     WargaCreateView,
     PengaduanCreateView,
-    WargaUpdateView,  
+    WargaUpdateView,
     WargaDeleteView,
-    PengaduanUpdateView, 
-    PengaduanDeleteView
-   
+    PengaduanUpdateView,
+    PengaduanDeleteView,
+    index,
+    pengaduan_list
 )
 
 urlpatterns = [
+    # View berbasis class untuk Warga
     path('', WargaListView.as_view(), name='warga-list'),
     path('tambah/', WargaCreateView.as_view(), name='warga-tambah'),
-    path('pengaduan/tambah/', PengaduanCreateView.as_view(), name='pengaduan-tambah'),
-    path('pengaduan/', PengaduanListView.as_view(), name='pengaduan-list'),
+    path('<int:pk>/', WargaDetailView.as_view(), name='warga-detail'),
     path('<int:pk>/edit/', WargaUpdateView.as_view(), name='warga-edit'),
     path('<int:pk>/hapus/', WargaDeleteView.as_view(), name='warga-hapus'),
-    path('<int:pk>/', WargaDetailView.as_view(), name='warga-detail'),
-     path('pengaduan/', PengaduanListView.as_view(), name='pengaduan-list'),
+
+    # View berbasis class untuk Pengaduan
+    path('pengaduan/', PengaduanListView.as_view(), name='pengaduan-list'),
     path('pengaduan/tambah/', PengaduanCreateView.as_view(), name='pengaduan-tambah'),
     path('pengaduan/<int:pk>/edit/', PengaduanUpdateView.as_view(), name='pengaduan-edit'),
     path('pengaduan/<int:pk>/hapus/', PengaduanDeleteView.as_view(), name='pengaduan-hapus'),
 
+    # View berbasis fungsi (HTML manual)
+    path('halaman/', index, name='warga_index'),
+    path('halaman/pengaduan/', pengaduan_list, name='pengaduan_list'),
 ]

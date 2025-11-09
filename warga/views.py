@@ -1,13 +1,14 @@
 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Warga, Pengaduan
-from .forms import WargaForm
-from .forms import WargaForm, PengaduanForm 
-from django.urls import reverse_lazy
-from rest_framework.generics import ListAPIView
-from .serializers import WargaSerializer
+from rest_framework import viewsets
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from .models import Warga, Pengaduan
+from .forms import WargaForm, PengaduanForm
+from .serializers import WargaSerializer, PengaduanSerializer
+from django.shortcuts import render
+
+
 
 class WargaListView(ListView):
     model = Warga
@@ -68,3 +69,22 @@ class WargaListAPIView(ListAPIView):
 class WargaDetailAPIView(RetrieveAPIView):
     queryset = Warga.objects.all()
     serializer_class = WargaSerializer
+
+class WargaViewSet(viewsets.ModelViewSet):
+    queryset = Warga.objects.all().order_by('-tanggal_registrasi')
+    serializer_class = WargaSerializer
+
+class PengaduanViewSet(viewsets.ModelViewSet):
+
+    queryset = Pengaduan.objects.all().order_by('-tanggal_lapor')  
+    serializer_class = PengaduanSerializer
+
+def index(request):
+    warga_list = Warga.objects.all()
+    return render(request, 'warga/warga_list.html', {'warga_list': warga_list})
+
+
+def pengaduan_list(request):
+    pengaduan_list = Pengaduan.objects.all().order_by('-tanggal_lapor')
+    return render(request, 'warga/pengaduan_list.html', {'pengaduan_list': pengaduan_list})
+
