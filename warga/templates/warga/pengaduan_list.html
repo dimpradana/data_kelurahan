@@ -2,161 +2,153 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Semua Pengaduan</title>
+    <title>Daftar Pengaduan</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f8;
+            background: #f4f6f9;
             margin: 0;
-            padding: 30px;
+            padding: 2rem;
         }
 
         h1 {
             text-align: center;
             color: #2c3e50;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
-        .top-actions {
+        .top-links {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
-        .top-actions a {
-            text-decoration: none;
-            background-color: #27ae60;
-            color: white;
-            padding: 10px 20px;
+        .top-links a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            background: #3498db;
+            color: #fff;
+            transition: background 0.3s ease;
         }
 
-        .top-actions a:hover {
-            background-color: #219150;
+        .top-links a:hover {
+            background: #2980b9;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            max-width: 800px;
-            margin: 0 auto;
+        .pengaduan-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
 
-        li {
-            background-color: #ffffff;
-            border: 1px solid #dcdcdc;
+        .card {
+            background: #fff;
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            position: relative;
+            padding: 1.5rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
 
-        li strong {
-            font-size: 18px;
-            color: #34495e;
-        }
-
-        .badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #ecf0f1;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85em;
+        .card strong {
+            font-size: 1.2rem;
             color: #2c3e50;
         }
 
-        li em {
-            display: block;
-            margin-top: 8px;
-            color: #7f8c8d;
+        .meta {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+            color: #555;
         }
 
-        li small {
-            display: block;
-            margin-top: 10px;
-            color: #95a5a6;
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.7rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: bold;
         }
 
-        .actions {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
+        .status.BARU {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .status.DIPROSES {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .status.SELESAI {
+            background: #2ecc71;
+            color: #fff;
+        }
+
+        .desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 1rem 0;
         }
 
         .actions a {
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .edit-btn {
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background-color: #e67e22;
-        }
-
-        .delete-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .back-button {
-            display: block;
-            text-align: center;
-            margin-top: 40px;
-            text-decoration: none;
-            background-color: #3498db;
-            color: white;
-            padding: 12px 24px;
+            display: inline-block;
+            margin-right: 0.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
         }
 
-        .back-button:hover {
-            background-color: #2980b9;
+        .actions a.edit {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .actions a.edit:hover {
+            background: #1e8449;
+        }
+
+        .actions a.delete {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .actions a.delete:hover {
+            background: #c0392b;
+        }
+
+        .empty {
+            text-align: center;
+            font-size: 1rem;
+            color: #888;
         }
     </style>
 </head>
 <body>
-    <h1>📋 Daftar Semua Pengaduan Warga</h1>
-    <div class="top-actions">
+    <h1>📋 Daftar Semua Pengaduan</h1>
+    <div class="top-links">
         <a href="{% url 'pengaduan-tambah' %}">➕ Tambah Pengaduan Baru</a>
+        <a href="{% url 'warga-list' %}">👥 Kembali ke Warga</a>
     </div>
-    <ul>
-        {% for aduan in pengaduan_list %}
-            <li>
-                <strong>{{ aduan.judul }}</strong>
-                <span class="badge">Status: {{ aduan.get_status_display }}</span>
-                <em>👤 Oleh: {{ aduan.pelapor.nama_lengkap }}</em>
-                📝 {{ aduan.deskripsi|truncatewords:15 }}
-                <small>📅 {{ aduan.tanggal_lapor }}</small>
-                <div class="actions">
-                    <a href="{% url 'pengaduan-edit' aduan.pk %}" class="edit-btn">✏️ Edit</a>
-                    <a href="{% url 'pengaduan-hapus' aduan.pk %}" class="delete-btn">🗑️ Hapus</a>
+
+    <div class="pengaduan-list">
+        {% for pengaduan in pengaduan_list %}
+            <div class="card">
+                <strong>{{ pengaduan.judul }}</strong>
+                <div class="meta">
+                    Oleh: {{ pengaduan.pelapor.nama_lengkap }} <br>
+                    Status: <span class="status {{ pengaduan.status }}">{{ pengaduan.get_status_display }}</span>
                 </div>
-            </li>
+                <div class="desc">{{ pengaduan.deskripsi }}</div>
+                <div class="actions">
+                    <a href="{% url 'pengaduan-edit' pengaduan.pk %}" class="edit">✏️ Edit</a>
+                    <a href="{% url 'pengaduan-hapus' pengaduan.pk %}" class="delete">🗑️ Hapus</a>
+                </div>
+            </div>
         {% empty %}
-            <li style="text-align:center; font-style:italic; color:#7f8c8d;">⚠️ Belum ada pengaduan yang dilaporkan.</li>
+            <p class="empty">Belum ada pengaduan yang terdaftar.</p>
         {% endfor %}
-    </ul>
-    <a href="{% url 'warga-list' %}" class="back-button">⬅️ Kembali ke Daftar Warga</a>
+    </div>
 </body>
 </html>

@@ -1,25 +1,14 @@
 from rest_framework import serializers
-from .models import Warga
-from .models import Pengaduan
-from rest_framework import serializers
 from .models import Warga, Pengaduan
-
-class PengaduanSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pengaduan
-        fields = ['id', 'warga', 'judul', 'isi_laporan', 'tanggal_lapor', 'status']
-
 
 class WargaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Warga
-        fields = '__all__'
+        fields = ['id', 'nik', 'nama_lengkap', 'alamat', 'no_telepon', 'tanggal_registrasi']
 
 class PengaduanSerializer(serializers.ModelSerializer):
+    pelapor_nama = serializers.CharField(source='pelapor.nama_lengkap', read_only=True)
+    
     class Meta:
         model = Pengaduan
-        fields = '__all__'
-
-
-
-
+        fields = ['id', 'judul', 'deskripsi', 'status', 'tanggal_lapor', 'pelapor', 'pelapor_nama']

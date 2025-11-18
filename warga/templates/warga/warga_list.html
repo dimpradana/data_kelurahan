@@ -1,114 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Daftar Warga Kelurahan</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eef2f5;
+            background: #f4f6f9;
             margin: 0;
-            padding: 40px 20px;
+            padding: 2rem;
         }
 
         h1 {
             text-align: center;
             color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2em;
+            margin-bottom: 1.5rem;
         }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        .top-links {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            text-decoration: none;
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
+        .top-links a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            background: #3498db;
+            color: #fff;
+            transition: background 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #2980b9;
+        .top-links a:hover {
+            background: #2980b9;
+        }
+
+        .warga-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
 
         .card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f9fbfc;
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: #fff;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
         }
 
         .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .card a {
             text-decoration: none;
-            color: #2980b9;
+            color: #2c3e50;
+            font-size: 1.1rem;
             font-weight: bold;
-            font-size: 1.1em;
         }
 
-        .nik {
-            font-size: 0.95em;
-            color: #555;
+        .card a:hover {
+            color: #3498db;
         }
 
         .empty {
             text-align: center;
-            color: #7f8c8d;
-            font-style: italic;
-            margin-top: 20px;
-        }
-
-        .icon {
-            margin-right: 10px;
-            font-size: 1.3em;
-            color: #3498db;
+            font-size: 1rem;
+            color: #888;
         }
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>📋 Daftar Warga Kelurahan</h1>
+    <h1>👥 Daftar Warga Kelurahan</h1>
+    <div class="top-links">
+        <a href="{% url 'warga-tambah' %}">➕ Tambah Warga Baru</a>
+    </div>
 
-        <div class="actions">
-            <a href="{% url 'warga-tambah' %}" class="btn">➕ Tambah Warga Baru</a>
-            <a href="{% url 'pengaduan-list' %}" class="btn">📨 Lihat Pengaduan Warga</a>
-        </div>
-
-        {% for warga in object_list %}
+    <div class="warga-list">
+        {% for warga in warga_list %}
             <div class="card">
-                <div>
-                    <span class="icon"><i class="fas fa-user"></i></span>
-                    <a href="{% url 'warga-detail' warga.pk %}">{{ warga.nama_lengkap }}</a>
-                </div>
-                <div class="nik">NIK: {{ warga.nik }}</div>
+                <a href="{% url 'warga-detail' warga.pk %}">
+                    {{ warga.nama_lengkap }} <br>
+                    <small>NIK: {{ warga.nik }}</small>
+                </a>
             </div>
         {% empty %}
-            <div class="empty">Belum ada data warga yang terdaftar.</div>
+            <p class="empty">Belum ada data warga yang terdaftar.</p>
         {% endfor %}
     </div>
 </body>
