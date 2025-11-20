@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Warga Kelurahan</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .pagination { margin-top: 20px; }
+        .pagination button { margin: 0 5px; padding: 5px 10px; cursor: pointer; }
+        .error { color: red; }
+        .loading { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Daftar Warga Kelurahan</h1>
+
+    <div>
+        <input type="text" id="searchInput" placeholder="Cari warga..." value="dimas">
+        <button onclick="loadData()">Cari</button>
+    </div>
+
+    <div id="loadingMessage" class="loading">Loading data...</div>
+    <div id="errorMessage" class="error"></div>
+    <div id="wargaTable"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script>
+        let currentPage = 1;
+        const token = 'deb091b32052a79af12ab230a79a5d84d93ef4be'; // Ganti dengan token yang didapat dari langkah C
+
+        // Fungsi untuk memuat data dengan error handling
+        async function loadData(page = 1, search = '') {
+            currentPage = page;
+            const url = new URL('http://127.0.0.1:8000/api/warga/', window.location.origin);
+            url.searchParams.append('page', page);
+
+            if (search) {
+                url.searchParams.append('search', search);
+            }
+
+            // Tampilkan pesan loading
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('errorMessage').textContent = '';
+            document.getElementById('wargaTable').innerHTML = '';
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                renderTable(data.results);
+                renderPagination(data.count, page);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent =
+                    `Error: ${error.message}. Pastikan token benar dan server berjalan.`;
+            } finally {
+                document.getElementById('loadingMessage').style.display = 'none';
+            }
+        }
+
+        // Fungsi untuk menampilkan data dalam tabel
+        function renderTable(wargaList) {
+            if (wargaList.length === 0) {
+                document.getElementById('wargaTable').innerHTML =
+                    '<p>Tidak ada data warga yang ditemukan.</p>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NIK</th>
+                            <th>Nama Lengkap</th>
+                            <th>Alamat</th>
+                            <th>No. Telepon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            wargaList.forEach(warga => {
+                html += `
+                    <tr>
+                        <td>${warga.nik || '-'}</td>
+                        <td>${warga.nama_lengkap || '-'}</td>
+                        <td>${warga.alamat || '-'}</td>
+                        <td>${warga.no_telepon || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('wargaTable').innerHTML = html;
+        }
+
+        // Fungsi untuk menampilkan pagination
+        function renderPagination(totalItems, currentPage) {
+            const itemsPerPage = 5;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            let html = '';
+            if (currentPage > 1) {
+                html += `<button onclick="loadData(${currentPage - 1}, document.getElementById('searchInput').value)">Previous</button>`;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    html += `<button style="font-weight: bold;" onclick="loadData(${i}, document.getElementById('searchInput').value)">${i}</button>`;
+                } else {
+                    html += `<button onclick="loadData(${i}, document.getElementById('searchInput').value)">${i}</button>`;
+                }
+            }
+
+            if (currentPage < totalPages) {
+                html += `<button onclick="loadData(${currentPage + 1}, document.getElementById('searchInput').value)">Next</button>`;
+            }
+
+            document.getElementById('pagination').innerHTML = html;
+        }
+
+        // Event listener untuk search input
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                loadData(1, this.value);
+            }
+        });
+
+        // Load data pertama kali saat halaman dimuat
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>
