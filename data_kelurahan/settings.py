@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     
+    
     # Apps kita
     'warga',
     
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_spectacular', 
 ]
 
 MIDDLEWARE = [
@@ -102,7 +104,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
+        
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
 }
 
 # CORS Configuration
@@ -113,4 +117,16 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Aplikasi Warga Kelurahan',
+    'DESCRIPTION': 'Dokumentasi resmi untuk mengelola data warga dan pengaduan kelurahan.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,  # Sembunyikan endpoint schema dari dokumentasi
+    'CONTACT': {
+        'name': 'dimas',
+        'email': 'dimas@gmail.com'
+    },
+}
 
