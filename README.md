@@ -1,3 +1,6 @@
+git huh front end : https://github.com/dimpradana/frontend.git
+
+
 * Modul 5: Konsep Fundamental API & Dunia JSON
 
 *   **Arsitektur:** Pindah dari Monolitik ke Decoupled (API Backend + Frontend Terpisah).
